@@ -1,21 +1,29 @@
 package com.example.data;
 
-import java.util.List;
 import java.sql.ResultSet;
+import java.util.List;
 
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PersonDAO {
+public class PersonDAO implements InitializingBean, DisposableBean {
 
+	private static int count = 0;
+	
 	@Autowired
-	private NamedParameterJdbcTemplate jdbcTemplate;
+	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
 	
 	public List<Person> getPersons() {
 		
-		return jdbcTemplate.query("SELECT * FROM person", (ResultSet rs, int rowNum) -> {
+		return namedParameterJdbcTemplate.query("SELECT * FROM person", (ResultSet rs, int rowNum) -> {
 			Person p = new Person();
 			p.setId(rs.getInt("id"));
 			p.setFirstName(rs.getString("first_name"));
@@ -26,5 +34,20 @@ public class PersonDAO {
 		});
 		
 	}
-	
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		PersonDAO.count++;
+		System.out.println( " *********** PersonDAO.count ********** : " + PersonDAO.count);
+		if (jdbcTemplate != null) {
+			System.out.println("****************PersonDAO**************** : afterPropertiesSet()" + jdbcTemplate.getClass());
+		} else {
+			System.out.println("****************PersonDAO**************** : afterPropertiesSet()" + namedParameterJdbcTemplate.getClass());
+		}
+	}
+
+	@Override
+	public void destroy() throws Exception {
+		System.out.println("****************PersonDAO**************** : destroy()" );
+	}
 }

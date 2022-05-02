@@ -26,14 +26,14 @@ public class WebApplicationInitializer extends AbstractAnnotationConfigDispatche
 		return new String[] {"/"};
 	}
 	
-	@Override
-	public void onStartup(ServletContext context) throws ServletException {
-		
-		super.onStartup(context);
-		ServletRegistration.Dynamic servlet = context.addServlet("h2-console", new WebServlet());
-		servlet.setLoadOnStartup(2);
-		servlet.addMapping("/console/*");
-		
-	}
+//	@Override
+//	public void onStartup(ServletContext context) throws ServletException {
+//		
+//		super.onStartup(context);
+//		ServletRegistration.Dynamic servlet = context.addServlet("h2-console", new WebServlet());
+//		servlet.setLoadOnStartup(2);
+//		servlet.addMapping("/console/*");
+//		
+//	}
 
 }

@@ -8,6 +8,8 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
+import com.example.data.PersonDAO;
+
 @Configuration
 public class H2DataBaseConfig {
 
@@ -27,10 +29,15 @@ public class H2DataBaseConfig {
 	
 	@Bean
 	public NamedParameterJdbcTemplate namedParameterJdbcTemplate() {
-		
+		System.out.println("%%%%%%%%%%%%%%%%%%% dataSource(): " + dataSource().getClass());
 		NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource());
 		return namedParameterJdbcTemplate;
 		
+	}
+	
+	@Bean
+	public PersonDAO personDAO() {
+		return new PersonDAO();
 	}
 	
 }
